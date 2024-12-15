@@ -1,0 +1,91 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header.html' %}
+<div class="container-fluid py-4">
+    {% include 'admin_app/components/alert.html' %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h6 class="mb-0">staff List</h6>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a href="{% url 'Addstaff' %}">
+                                <button class="btn btn-primary btn-sm mb-0">Add staff</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Faculty ID</th>
+                                    <th scope="col">Photo</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Dob</th>
+                                    <th scope="col">phonenumber</th>
+                                    <th scope="col">Place</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for faculty in facultys %}
+                                <tr class="text-center">
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ faculty.id }}</td>
+                                    <td>
+                                        {% if faculty.image %}
+                                            <a href="{{ faculty.image.url }}" target="_blank">
+                                                <img src="{{ faculty.image.url }}" alt="{{ faculty.Username }}" class="img-fluid" style="max-width: 100px;">
+                                            </a>
+                                        {% else %}
+                                            No Photo
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ faculty.username }}</td>
+                                    <td>{{ faculty.email }}</td>
+                                    <td>{{ faculty.dob }}</td>
+                                    <td>{{ faculty.phone_number }}</td>
+                                    <td>{{ faculty.place }}</td>
+                                    <td>{{ faculty.address }}</td>
+                                    <td>
+                                        
+                                        <span>
+                                            <a href="{% url 'editstaff' faculty.id %}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        </span>
+                                        <span>
+                                            <a href="{% url 'facultydelete' faculty.id %}" 
+                                               onclick="return confirm('Do you want to delete this faculty member?')">
+                                                <i class="bi bi-trash3-fill text-danger"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No faculty members found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+{% endblock content %}
