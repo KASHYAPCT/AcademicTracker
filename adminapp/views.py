@@ -88,8 +88,10 @@ def Addstaff(request):
 
 def staffdashboard(request):
     current_page = 'staffdashboard'
+    current_user = request.user
     context = {
         'current_page': current_page,
+        'current_user': current_user
     }
     return render(request, 'admin_app/pages/staffdashboard.html', context)
 
@@ -201,14 +203,16 @@ def stud_delete(request, stud_id):
 
 def studdashboard(request):
     current_page = 'studdashboard'
+    current_user = request.user
     context = {
         'current_page': current_page,
+        'student': current_user
     }
     return render(request, 'admin_app/pages/studentdashboard.html', context)
 
 def addtimetable(request):
       if request.method == 'POST':
-        photo = request.POST.get('photo')
+        photo = request.FILES.get('photo')
         semester = request.POST.get('semester')
         try:
             Timetable.objects.create(
@@ -216,11 +220,36 @@ def addtimetable(request):
                 file=photo,
             
             )
-            messages.success(request, f"timetable {Timetable.sem} added successfully!")
+            messages.success(request, f"timetable added successfully!")
             return redirect('dashboard')  # Adjust the redirection as needed
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
 
       return render(request,'admin_app/pages/Addtimetable.html')
 
-        
+def timetable_view(request):
+    current_page = 'timetableview'
+    try:
+        timetables  = Timetable.objects.all()
+    except Timetable.DoesNotExist:
+        messages.error(request, 'timetable not found')
+        return redirect('dashboard')
+    context = {
+        'current_page': current_page,
+        'timetables':timetables
+    }
+    return render(request, 'admin_app/pages/viewtimetable.html', context)
+
+
+def timetablestaff_view(request):
+    current_page = 'timetablestaff'
+    try:
+        timetables  = Timetable.objects.all()
+    except Timetable.DoesNotExist:
+        messages.error(request, 'timetable not found')
+        return redirect('staffdashboard')
+    context = {
+        'current_page': current_page,
+        'timetables':timetables
+    }
+    return render(request, 'admin_app/pages/viewtimetablestaff.html', context)

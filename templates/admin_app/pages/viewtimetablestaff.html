@@ -1,0 +1,59 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header1.html' %}
+<div class="container-fluid py-4">
+    {% include 'admin_app/components/alert.html' %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h6 class="mb-0">Timetable List</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Semester</th>
+                                    <th class="text-center">File</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for timetable in timetables %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td>{{ timetable.sem}}</td>
+                                    <td class="text-center">
+                                        <a href="{{ timetable.file.url }}" target="_blank">
+                                            <img src="{{ timetable.file.url }}" alt="Timetable" style="max-width: 100px;">
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- Example action buttons -->
+                                        <!-- <a href="" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="" class="btn btn-sm btn-danger">Delete</a> -->
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No timetables available.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  {% endblock content %}

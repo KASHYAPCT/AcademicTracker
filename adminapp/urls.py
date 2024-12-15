@@ -20,7 +20,10 @@ urlpatterns = [
     path('accounts/password_change/staffdone/', auth_views.PasswordChangeDoneView.as_view(template_name='admin_app/pages/changepassstffdone.html'), name='changepassstffdone'),
     path('accounts/password_change/stud/', auth_views.PasswordChangeView.as_view(template_name='admin_app/pages/changepassstud.html'), name='changestudpass'),
     path('accounts/password_change/studdone/', auth_views.PasswordChangeDoneView.as_view(template_name='admin_app/pages/changepassstuddone.html'), name='changepassstuddone'),
-    path('addtimetable/',views.addtimetable,name="addtimetable")
+    path('addtimetable/',views.addtimetable,name="addtimetable"),
+    path('timetableview/',views.timetable_view,name="timetableview"),
+    path('timetablestaff/',views.timetablestaff_view,name="timetablestaff")
+
 
 
 ]   

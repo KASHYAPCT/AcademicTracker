@@ -16,7 +16,8 @@ class User(AbstractUser):
     
 class Timetable(models.Model):
     file=models.ImageField(upload_to='table/',null=True,blank=True)
-    sem=models.ForeignKey(User,on_delete=models.CASCADE)
+    sem=models.CharField(max_length=50,null=True,blank=True)
 
     
-    
+class Notifications(models.Model):
+    description=models.CharField(max_length=150,null=True,blank=True)

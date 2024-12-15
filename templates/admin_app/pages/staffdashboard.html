@@ -8,76 +8,71 @@
   {% include 'admin_app/components/alert.html' %}
 
   <div class="card mt-5">
-    <div class="card-body">
-      <h3 class="pb-3">Pages</h3>
-      <ul style="list-style: none;">
-        <li class="pb-2">
-          <span style="color: green;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-            </svg>
-          </span>
-          <span>
-            <a href="{% url 'staffdashboard' %}">Home</a>
-          </span>
-        </li>
+    <div class="card-body text">
+        <!-- Profile Photo -->
+        {% if current_user.image %}
+            <img src="{{ current_user.image.url }}" alt="Profile Photo" class="img-thumbnail mb-3" width="100">
+        {% else %}
+            <p><em>No photo uploaded</em></p>
+        {% endif %}
 
-        <li class="pb-2">
-            <span style="color: green;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-              </svg>
-            </span>
-            <span>
-              <a href="">Add result</a>
-            </span>
-          </li>
-  
-          <li class="pb-2">
-            <span style="color: green;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-              </svg>
-            </span>
-            <span>
-              <a href="">Add timetable</a>
-            </span>
-          </li>
+        <!-- User Details -->
+        <h3 class="pb-3">Welcome, {{ current_user.first_name }} {{ current_user.last_name }}</h3>
 
-        <li class="pb-2">
-          <span style="color: green;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-            </svg>
-          </span>
-          <span>
-            <a href="">update result</a>
-          </span>
-        </li>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Username:</strong> {{ current_user.username }}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Role:</strong> 
+                    {% if current_user.is_fac %}
+                        Faculty
+                    {% else %}
+                        Student
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Date of Birth:</strong> 
+                    {% if current_user.dob %}
+                        {{ current_user.dob|date:"F j, Y" }}
+                    {% else %}
+                        <em>Not provided</em>
+                    {% endif %}
+                </p>
+                <p><strong>Phone Number:</strong> 
+                    {% if current_user.phone_number %}
+                        {{ current_user.phone_number }}
+                    {% else %}
+                        <em>Not provided</em>
+                    {% endif %}
+                </p>
+                <p><strong>Address:</strong> 
+                    {% if current_user.address %}
+                        {{ current_user.address }}
+                    {% else %}
+                        <em>Not provided</em>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
 
-        <li class="pb-2">
-          <span style="color: green;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-            </svg>
-          </span>
-          <span>
-            <a href="">update timetable</a>
-          </span>
-        </li>
-        <li class="pb-2">
-          <span style="color: green;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-            </svg>
-          </span>
-          <span>
-            <a href="">Project List</a>
-          </span>
-        </li>
-      </ul>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <p><strong>Place:</strong> 
+                    {% if current_user.place %}
+                        {{ current_user.place }}
+                    {% else %}
+                        <em>Not provided</em>
+                    {% endif %}
+                </p>
+                
+            </div>
+            <div class="col-md-6">
+                <p><strong>Date Joined:</strong> {{ current_user.date_joined|date:"F j, Y" }}</p>
+            </div>
+        </div>
     </div>
-  </div>
-    
-</main>
+</div>
+
+
 {% endblock content %}
