@@ -25,6 +25,8 @@ urlpatterns = [
     path('timetablestaff/',views.timetablestaff_view,name="timetablestaff"),
     path('students/update/<int:student_id>/',views.update_student, name='updatestudent'),
     path('addnotification/',views.addnotification,name="addnotification"),
+    path("view-notifications/", views.view_notifications, name="viewnotifications"),
+    path('timetablestud/',views.timetablestud_view,name="timetablestud"),
 
 
 

@@ -125,7 +125,7 @@ def add_stud(request):
                 semester=sem,
                 is_stud=True
             )
-            messages.success(request, f"Stud member {User.username} added successfully!")
+            messages.success(request, f"Stud member  added successfully!")
             return redirect('dashboard')  # Adjust the redirection as needed
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
@@ -295,3 +295,23 @@ def addnotification(request):
             messages.error(request, f"An error occurred: {str(e)}")
 
       return render(request,'admin_app/pages/Addnotification.html')
+
+def view_notifications(request):
+    # Fetch all notifications from the database
+    notifications = Notifications.objects.all()
+    return render(request, "admin_app/pages/viewnotification.html", {"notifications": notifications})
+
+
+
+def timetablestud_view(request):
+    current_page = 'timetablestud'
+    try:
+        timetables  = Timetable.objects.all()
+    except Timetable.DoesNotExist:
+        messages.error(request, 'timetable not found')
+        return redirect('studdashboard')
+    context = {
+        'current_page': current_page,
+        'timetables':timetables
+    }
+    return render(request, 'admin_app/pages/studentdashboard.html', context)
