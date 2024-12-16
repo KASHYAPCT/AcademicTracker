@@ -1,0 +1,117 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header.html' %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">Update Student</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Student ID -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_studid" class="form-control-label">Student ID:</label>
+                                <input type="text" name="studid" id="id_studid" class="form-control" value="{{ student.id }}" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_username" class="form-control-label">Username:</label>
+                                <input type="text" name="username" id="id_username" class="form-control" value="{{ student.username }}" required>
+                            </div>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_firstname" class="form-control-label">First Name:</label>
+                                <input type="text" name="firstname" id="id_firstname" class="form-control" value="{{ student.first_name }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_lastname" class="form-control-label">Last Name:</label>
+                                <input type="text" name="lastname" id="id_lastname" class="form-control" value="{{ student.last_name }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_email" class="form-control-label">Email:</label>
+                                <input type="email" name="email" id="id_email" class="form-control" value="{{ student.email }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_dob" class="form-control-label">Date of Birth:</label>
+                                <input type="date" name="dob" id="id_dob" class="form-control" value="{{ student.dob|date:'Y-m-d' }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Place -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_place" class="form-control-label">Place:</label>
+                                <input type="text" name="place" id="id_place" class="form-control" value="{{ student.place }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Photo -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_photo" class="form-control-label">Photo:</label>
+                                <input type="file" name="photo" id="id_photo" class="form-control" accept="image/*">
+                                <p class="text-muted">current: {{ student.image }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_phoneno" class="form-control-label">Phone Number:</label>
+                                <input type="tel" name="phoneno" id="id_phoneno" class="form-control" value="{{ student.phone_number }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Semester -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_semester" class="form-control-label">Semester:</label>
+                                <input type="tel" name="semester" id="id_semester" class="form-control" value="{{ student.semester }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="id_address" class="form-control-label">Address:</label>
+                                <textarea name="address" id="id_address" class="form-control" rows="3" required>{{ student.address }}</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-primary" type="submit">Update Student</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

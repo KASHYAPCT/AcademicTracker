@@ -21,3 +21,31 @@ class Timetable(models.Model):
     
 class Notifications(models.Model):
     description=models.CharField(max_length=150,null=True,blank=True)
+
+
+class StudentResult(models.Model):
+    # Student Information
+    registration_number = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
+    programme = models.CharField(max_length=100, default="Master of Computer Applications")
+    semester = models.CharField(max_length=50)
+    college = models.CharField(max_length=255)
+
+    # Course Details
+    course_code = models.CharField(max_length=10)
+    course_title = models.CharField(max_length=255)
+    credits = models.FloatField()
+    ca_marks = models.IntegerField("Continuous Assessment Marks")
+    ese_marks = models.IntegerField("End Semester Evaluation Marks")
+    total_marks = models.IntegerField()
+    grade_point = models.FloatField()
+    credit_point = models.FloatField()
+    result = models.CharField(max_length=1, choices=[("P", "Pass"), ("F", "Fail")])
+
+    # Additional Information
+    sgpa = models.FloatField(null=True, blank=True)
+    grade = models.CharField(max_length=2, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=[("Passed", "Passed"), ("Failed", "Failed")])
+
+    def __str__(self):
+        return f"{self.name} - {self.course_code} ({self.result})"

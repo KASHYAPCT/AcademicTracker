@@ -253,3 +253,45 @@ def timetablestaff_view(request):
         'timetables':timetables
     }
     return render(request, 'admin_app/pages/viewtimetablestaff.html', context)
+
+def update_student(request, student_id):
+    # Get the student object or return a 404 if not found
+    student = get_object_or_404(User, id=student_id)
+
+    if request.method == "POST":
+        # Update the student object with form data
+        student.username = request.POST.get('username')
+        student.first_name = request.POST.get('firstname')
+        student.last_name = request.POST.get('lastname')
+        student.email = request.POST.get('email')
+        student.dob = request.POST.get('dob')
+        student.place = request.POST.get('place')
+        student.phone_number = request.POST.get('phoneno')
+        student.semester = request.POST.get('semester')
+        student.address = request.POST.get('address')
+
+        # Check if a new photo is uploaded
+        if request.FILES.get('photo'):
+            student.image = request.FILES['photo']
+
+
+        # Save changes to the database
+        student.save()
+
+        messages.success(request, "Student details updated successfully!")
+        return redirect('studlist')  # Replace with the name of your redirect URL
+
+    return render(request, 'admin_app/pages/editstud.html', {'student': student})
+
+def addnotification(request):
+      if request.method == 'POST':
+        description = request.POST.get('notification')
+        try:
+            Notifications.objects.create(
+                description=description )
+            messages.success(request, f"Notifications added successfully!")
+            return redirect('dashboard')  # Adjust the redirection as needed
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+
+      return render(request,'admin_app/pages/Addnotification.html')

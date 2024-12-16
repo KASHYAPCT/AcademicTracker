@@ -1,0 +1,41 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header.html' %}
+<div class="container-fluid py-4">
+    {% include 'admin_app/components/alert.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-0">Add Timetable</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                    
+                            <!-- Photo -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_address" class="form-control-label">Notification:</label>
+                                    <textarea name="notification" id="id_address" class="form-control" rows="3" required></textarea>
+                                </div>
+                            </div>
+                           
+                          <!-- Submit Button -->
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button class="btn btn-primary" type="submit">Add Notification</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

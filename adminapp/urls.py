@@ -22,7 +22,9 @@ urlpatterns = [
     path('accounts/password_change/studdone/', auth_views.PasswordChangeDoneView.as_view(template_name='admin_app/pages/changepassstuddone.html'), name='changepassstuddone'),
     path('addtimetable/',views.addtimetable,name="addtimetable"),
     path('timetableview/',views.timetable_view,name="timetableview"),
-    path('timetablestaff/',views.timetablestaff_view,name="timetablestaff")
+    path('timetablestaff/',views.timetablestaff_view,name="timetablestaff"),
+    path('students/update/<int:student_id>/',views.update_student, name='updatestudent'),
+    path('addnotification/',views.addnotification,name="addnotification"),
 
 
 
