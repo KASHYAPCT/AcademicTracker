@@ -298,8 +298,26 @@ def addnotification(request):
 
 def view_notifications(request):
     # Fetch all notifications from the database
+    current_page = 'viewnotifications'
     notifications = Notifications.objects.all()
-    return render(request, "admin_app/pages/viewnotification.html", {"notifications": notifications})
+    context = {
+        'current_page': current_page,
+        "notifications": notifications
+    }
+    
+    return render(request, "admin_app/pages/viewnotification.html",context)
+
+
+def view_notificationsstud(request):
+    # Fetch all notifications from the database
+    current_page = 'viewnotificationsstud'
+    notifications = Notifications.objects.all()
+    context = {
+        'current_page': current_page,
+        "notifications": notifications
+    }
+    
+    return render(request, "admin_app/pages/viewnotificationstud.html",context)
 
 
 
@@ -314,4 +332,4 @@ def timetablestud_view(request):
         'current_page': current_page,
         'timetables':timetables
     }
-    return render(request, 'admin_app/pages/studentdashboard.html', context)
+    return render(request, 'admin_app/pages/viewtimetablestud.html', context)

@@ -27,6 +27,8 @@ urlpatterns = [
     path('addnotification/',views.addnotification,name="addnotification"),
     path("view-notifications/", views.view_notifications, name="viewnotifications"),
     path('timetablestud/',views.timetablestud_view,name="timetablestud"),
+    path("view-notificationsstud/", views.view_notificationsstud, name="viewnotificationsstud"),
+
 
 
 
