@@ -1,0 +1,49 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header.html' %}
+<div class="container-fluid py-4">
+    {% include 'admin_app/components/alert.html' %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">Edit Timetable</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Photo -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_photo" class="form-control-label">Photo:</label>
+                                <input type="file" name="photo" id="id_photo" class="form-control" accept="image/*">
+                                {% if timetable.file %}
+                                    <p class="mt-2">Current File: <a href="{{ timetable.file.url }}" target="_blank">View File</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Semester -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_semester" class="form-control-label">Semester:</label>
+                                <input type="text" name="semester" id="id_semester" class="form-control" value="{{ timetable.sem }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-success" type="submit">Update Timetable</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

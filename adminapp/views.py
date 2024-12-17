@@ -324,12 +324,63 @@ def view_notificationsstud(request):
 def timetablestud_view(request):
     current_page = 'timetablestud'
     try:
-        timetables  = Timetable.objects.all()
-    except Timetable.DoesNotExist:
-        messages.error(request, 'timetable not found')
+        # Ensure the user has a 'semester' field in their profile
+        user_semester = request.user.semester  # Assuming 'semester' exists in the User model or profile
+        
+        # Filter timetables where 'sem' matches the user's semester
+        timetables = Timetable.objects.filter(sem=user_semester)
+        
+        if not timetables.exists():  # If no matching timetables are found
+            messages.warning(request, f"No timetable found for Semester: {user_semester}")
+            return redirect('studdashboard')
+
+    except AttributeError:
+        messages.error(request, "User does not have a semester field.")
         return redirect('studdashboard')
+
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+        return redirect('studdashboard')
+
     context = {
         'current_page': current_page,
-        'timetables':timetables
+        'timetables': timetables
     }
     return render(request, 'admin_app/pages/viewtimetablestud.html', context)
+
+
+
+def edit_timetable(request, pk):
+    timetable = get_object_or_404(Timetable, pk=pk)  # Get the timetable instance
+    
+    if request.method == 'POST':
+        # Retrieve form data
+        photo = request.FILES.get('photo')
+        semester = request.POST.get('semester')
+
+        try:
+            # Update fields if provided
+            if photo:
+                timetable.file = photo
+            if semester:
+                timetable.sem = semester
+
+            timetable.save()  # Save the updated instance
+            messages.success(request, "Timetable updated successfully!")
+            return redirect('timetableview')  # Redirect to timetable listing page
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+
+    context = {
+        'timetable': timetable
+    }
+    return render(request, 'admin_app/pages/edittimetable.html', context)
+
+def delete_timetable(request, pk):
+    timetable = get_object_or_404(Timetable, pk=pk)  # Get the timetable instance
+    try:
+        timetable.delete()  # Delete the instance
+        messages.success(request, "Timetable deleted successfully!")
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+    return redirect('timetableview') 

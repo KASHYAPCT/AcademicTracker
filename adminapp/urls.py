@@ -28,6 +28,8 @@ urlpatterns = [
     path("view-notifications/", views.view_notifications, name="viewnotifications"),
     path('timetablestud/',views.timetablestud_view,name="timetablestud"),
     path("view-notificationsstud/", views.view_notificationsstud, name="viewnotificationsstud"),
+    path('timetable/edit/<int:pk>/', views.edit_timetable, name='edittimetable'),
+    path('timetable/delete/<int:pk>/',views.delete_timetable, name='deletetimetable'),
 
 
 

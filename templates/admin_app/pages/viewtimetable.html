@@ -23,7 +23,7 @@
                                     <th class="text-center">#</th>
                                     <th>Semester</th>
                                     <th class="text-center">File</th>
-                                    <!-- <th class="text-center">Actions</th> -->
+                                    <th class="text-center">Actions</th> 
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,8 +38,8 @@
                                     </td>
                                     <td class="text-center">
                                         <!-- Example action buttons -->
-                                        <!-- <a href="" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="" class="btn btn-sm btn-danger">Delete</a> -->
+                                       <a href="{% url 'edittimetable' timetable.id %}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{% url 'deletetimetable' timetable.id %}" class="btn btn-sm btn-danger">Delete</a> 
                                     </td>
                                 </tr>
                                 {% empty %}
