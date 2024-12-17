@@ -24,7 +24,7 @@
                                     <input type="text" name="studid" id="id_studid" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Username -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -32,14 +32,18 @@
                                     <input type="text" name="username" id="id_username" class="form-control" required>
                                 </div>
                             </div>
-
+    
+                            <!-- Password -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_password" class="form-control-label">Password:</label>
-                                    <input type="password" name="password" id="id_password" class="form-control" required>
+                                    <input type="password" name="password" id="id_password" class="form-control" 
+                                           pattern=".{8,}" 
+                                           title="Password must be at least 8 characters" 
+                                           required>
                                 </div>
                             </div>
-
+    
                             <!-- First Name -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -47,7 +51,7 @@
                                     <input type="text" name="firstname" id="id_firstname" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Last Name -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -55,7 +59,7 @@
                                     <input type="text" name="lastname" id="id_lastname" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Email -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -63,7 +67,7 @@
                                     <input type="email" name="email" id="id_email" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Date of Birth -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -71,7 +75,7 @@
                                     <input type="date" name="dob" id="id_dob" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Place -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -79,7 +83,7 @@
                                     <input type="text" name="place" id="id_place" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Photo -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -87,21 +91,26 @@
                                     <input type="file" name="photo" id="id_photo" class="form-control" accept="image/*" required>
                                 </div>
                             </div>
-
+    
                             <!-- Phone Number -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_phoneno" class="form-control-label">Phone Number:</label>
-                                    <input type="tel" name="phoneno" id="id_phoneno" class="form-control" required>
+                                    <input type="tel" name="phoneno" id="id_phoneno" 
+                                           pattern="\d{10}" 
+                                           title="Phone number must be exactly 10 digits" 
+                                           class="form-control" required>
                                 </div>
                             </div>
+    
+                            <!-- Semester -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="id_phoneno" class="form-control-label">Semester :</label>
-                                    <input type="tel" name="semester" id="semster" class="form-control" required>
+                                    <label for="id_semester" class="form-control-label">Semester:</label>
+                                    <input type="tel" name="semester" id="id_semester" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Address -->
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -109,7 +118,7 @@
                                     <textarea name="address" id="id_address" class="form-control" rows="3" required></textarea>
                                 </div>
                             </div>
-
+    
                             <!-- Submit Button -->
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Add Student</button>
@@ -120,6 +129,6 @@
             </div>
         </div>
     </div>
-</div>
+    
 
 {% endblock content %}
