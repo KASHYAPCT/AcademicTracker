@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                         {% csrf_token %}
                         <div class="row">
                             <!-- Faculty ID -->
@@ -24,7 +24,7 @@
                                     <input type="text" name="fac_id" id="id_fac_id" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Name -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -32,15 +32,18 @@
                                     <input type="text" name="name" id="id_name" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Password -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_password" class="form-control-label">Password:</label>
-                                    <input type="password" name="password" id="id_password" class="form-control" required>
+                                    <input type="password" name="password" id="id_password" class="form-control" 
+                                           pattern=".{8,}" 
+                                           title="Password must be at least 8 characters" 
+                                           required>
                                 </div>
                             </div>
-
+    
                             <!-- Date of Birth -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -48,7 +51,7 @@
                                     <input type="date" name="dob" id="id_dob" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Place -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -56,7 +59,7 @@
                                     <input type="text" name="place" id="id_place" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Address -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -64,7 +67,7 @@
                                     <textarea name="address" id="id_address" class="form-control" rows="3" required></textarea>
                                 </div>
                             </div>
-
+    
                             <!-- Email -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -72,15 +75,18 @@
                                     <input type="email" name="email" id="id_email" class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Phone Number -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_phoneno" class="form-control-label">Phone Number:</label>
-                                    <input type="tel" name="phoneno" id="id_phoneno" class="form-control" required>
+                                    <input type="tel" name="phoneno" id="id_phoneno" 
+                                    pattern="\d{10}" 
+                                    title="Phone number must be exactly 10 digits" 
+                                    class="form-control" required>
                                 </div>
                             </div>
-
+    
                             <!-- Photo -->
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -88,7 +94,7 @@
                                     <input type="file" name="photo" id="id_photo" class="form-control" accept="image/*" required>
                                 </div>
                             </div>
-
+    
                             <!-- Submit Button -->
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Add Staff</button>
@@ -99,7 +105,5 @@
             </div>
         </div>
     </div>
-</div>
 
-</main>
 {% endblock content %}
