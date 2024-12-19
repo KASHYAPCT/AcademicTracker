@@ -384,3 +384,55 @@ def delete_timetable(request, pk):
     except Exception as e:
         messages.error(request, f"An error occurred: {str(e)}")
     return redirect('timetableview') 
+
+
+def add_result(request):
+    if request.method == 'POST':
+        # Get data from the POST request
+        student = request.POST.get('student')
+        registration_number = request.POST.get('registration_number')
+        name = request.POST.get('name')
+        programme = request.POST.get('programme', 'Master of Computer Applications')
+        semester = request.POST.get('semester')
+        college = request.POST.get('college')
+        course_code = request.POST.get('course_code')
+        course_title = request.POST.get('course_title')
+        credits = request.POST.get('credits')
+        ca_marks = request.POST.get('ca_marks')
+        ese_marks = request.POST.get('ese_marks')
+        total_marks = request.POST.get('total_marks')
+        grade_point = request.POST.get('grade_point')
+        credit_point = request.POST.get('credit_point')
+        result = request.POST.get('result')
+        sgpa = request.POST.get('sgpa')
+        grade = request.POST.get('grade')
+        status = request.POST.get('status')
+
+        try:
+            # Save the data into the database
+            StudentResult.objects.create(
+                student_id=student,
+                registration_number=registration_number,
+                name=name,
+                programme=programme,
+                semester=semester,
+                college=college,
+                course_code=course_code,
+                course_title=course_title,
+                credits=credits,
+                ca_marks=ca_marks,
+                ese_marks=ese_marks,
+                total_marks=total_marks,
+                grade_point=grade_point,
+                credit_point=credit_point,
+                result=result,
+                sgpa=sgpa,
+                grade=grade,
+                status=status
+            )
+            messages.success(request, "Student result added successfully!")
+            return redirect('staffdashboard')  # Redirect to a success page
+        except Exception as e:
+            messages.error(request, f"Error occurred: {e}")
+
+    return render(request, 'admin_app/pages/Addresult.html')

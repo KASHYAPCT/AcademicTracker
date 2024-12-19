@@ -25,6 +25,7 @@ class Notifications(models.Model):
 
 class StudentResult(models.Model):
     # Student Information
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="results",default='')
     registration_number = models.CharField(max_length=20)
     name = models.CharField(max_length=100)
     programme = models.CharField(max_length=100, default="Master of Computer Applications")
