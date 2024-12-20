@@ -10,18 +10,22 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
-                        <p class="mb-0">Add Student Result</p>
+                        <p class="mb-0">Add Result</p>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data"  action="{% url 'addresult' %}">
                         {% csrf_token %}
                         <div class="row">
-                            <!-- Student -->
+                  <!-- Student -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_student" class="form-control-label">Student:</label>
-                                    {{ form.student }}
+                                    <select name="student" id="id_student" class="form-control" required>
+                                        {% for user in users %}
+                                            <option value="{{ user.id }}">{{ user.username }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
     
@@ -29,7 +33,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_registration_number" class="form-control-label">Registration Number:</label>
-                                    {{ form.registration_number }}
+                                    <input type="text" name="registration_number" id="id_registration_number" class="form-control" required>
                                 </div>
                             </div>
     
@@ -37,7 +41,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_name" class="form-control-label">Name:</label>
-                                    {{ form.name }}
+                                    <input type="text" name="name" id="id_name" class="form-control" required>
                                 </div>
                             </div>
     
@@ -45,7 +49,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_programme" class="form-control-label">Programme:</label>
-                                    {{ form.programme }}
+                                    <input type="text" name="programme" id="id_programme" class="form-control" value="Master of Computer Applications" disabled>
                                 </div>
                             </div>
     
@@ -53,7 +57,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_semester" class="form-control-label">Semester:</label>
-                                    {{ form.semester }}
+                                    <input type="text" name="semester" id="id_semester" class="form-control" required>
                                 </div>
                             </div>
     
@@ -61,7 +65,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_college" class="form-control-label">College:</label>
-                                    {{ form.college }}
+                                    <input type="text" name="college" id="id_college" class="form-control" required>
                                 </div>
                             </div>
     
@@ -69,7 +73,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_course_code" class="form-control-label">Course Code:</label>
-                                    {{ form.course_code }}
+                                    <input type="text" name="course_code" id="id_course_code" class="form-control" required>
                                 </div>
                             </div>
     
@@ -77,15 +81,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_course_title" class="form-control-label">Course Title:</label>
-                                    {{ form.course_title }}
+                                    <input type="text" name="course_title" id="id_course_title" class="form-control" required>
                                 </div>
                             </div>
     
-                            <!-- Credits -->
+                            <!-- Maximum Marks -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="id_credits" class="form-control-label">Credits:</label>
-                                    {{ form.credits }}
+                                    <label for="id_max_mark" class="form-control-label">Maximum Marks:</label>
+                                    <input type="number" name="max_mark" id="id_max_mark" class="form-control" required>
                                 </div>
                             </div>
     
@@ -93,15 +97,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_ca_marks" class="form-control-label">CA Marks:</label>
-                                    {{ form.ca_marks }}
+                                    <input type="number" name="ca_marks" id="id_ca_marks" class="form-control" required>
                                 </div>
                             </div>
     
-                            <!-- End Semester Evaluation Marks -->
+                            <!-- End Semester Marks -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_ese_marks" class="form-control-label">ESE Marks:</label>
-                                    {{ form.ese_marks }}
+                                    <input type="number" name="ese_marks" id="id_ese_marks" class="form-control" required>
                                 </div>
                             </div>
     
@@ -109,23 +113,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_total_marks" class="form-control-label">Total Marks:</label>
-                                    {{ form.total_marks }}
+                                    <input type="number" name="total_marks" id="id_total_marks" class="form-control" required>
                                 </div>
                             </div>
     
-                            <!-- Grade Point -->
+                            <!-- Grade -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="id_grade_point" class="form-control-label">Grade Point:</label>
-                                    {{ form.grade_point }}
-                                </div>
-                            </div>
-    
-                            <!-- Credit Point -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="id_credit_point" class="form-control-label">Credit Point:</label>
-                                    {{ form.credit_point }}
+                                    <label for="id_grade_sub" class="form-control-label">Grade:</label>
+                                    <input type="text" name="grade_sub" id="id_grade_sub" class="form-control">
                                 </div>
                             </div>
     
@@ -133,31 +129,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_result" class="form-control-label">Result:</label>
-                                    {{ form.result }}
-                                </div>
-                            </div>
-    
-                            <!-- SGPA -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="id_sgpa" class="form-control-label">SGPA:</label>
-                                    {{ form.sgpa }}
-                                </div>
-                            </div>
-    
-                            <!-- Grade -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="id_grade" class="form-control-label">Grade:</label>
-                                    {{ form.grade }}
-                                </div>
-                            </div>
-    
-                            <!-- Status -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="id_status" class="form-control-label">Status:</label>
-                                    {{ form.status }}
+                                    <select name="result" id="id_result" class="form-control" required>
+                                        <option value="P">Pass</option>
+                                        <option value="F">Fail</option>
+                                    </select>
                                 </div>
                             </div>
     
@@ -165,11 +140,13 @@
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Add Result</button>
                             </div>
+    
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    
     
 {% endblock content %}

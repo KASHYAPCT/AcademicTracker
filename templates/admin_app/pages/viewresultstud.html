@@ -1,0 +1,56 @@
+{% extends "admin_app/components/base.html" %}
+{% load static %}
+{% block content %}
+
+{% include 'admin_app/components/header2.html' %}
+<div class="container-fluid py-4">
+    {% include 'admin_app/components/alert.html' %}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3 text-center" style="color: #333;">{{ student.username }}'s Results</h3>
+            <table class="table table-bordered table-hover" style="text-align: center; background-color: #f9f9f9;">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Max Marks</th>
+                        <th>CA Marks</th>
+                        <th>ESE Marks</th>
+                        <th>Total Marks</th>
+                        <th>Grade</th>
+                        <th>Result</th>
+                        <th>Semester</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ result.course_code }}</td>
+                        <td>{{ result.course_title }}</td>
+                        <td>{{ result.max_mark }}</td>
+                        <td>{{ result.ca_marks }}</td>
+                        <td>{{ result.ese_marks }}</td>
+                        <td>{{ result.total_marks }}</td>
+                        <td>{{ result.grade_sub }}</td>
+                        <td>{{ result.result }}</td>
+                        <td>{{ result.semester }}</td> <!-- Assuming you have a semester field -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <p style="font-weight: bold; color: #333;">SGPA: <span style="color: #007bff;">{{ sgpa }}</span></p>
+        </div>
+        <div class="col-md-6 text-end">
+            <p style="font-weight: bold; color: #333;">Overall Status: <span style="color: #007bff;">{{ overall_status }}</span></p>
+        </div>
+    </div>
+    
+    {% endblock content %}
+    

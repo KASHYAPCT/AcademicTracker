@@ -4,6 +4,7 @@ from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Sum, Avg, Count
 
 
 def Login(request):
@@ -387,52 +388,88 @@ def delete_timetable(request, pk):
 
 
 def add_result(request):
-    if request.method == 'POST':
-        # Get data from the POST request
-        student = request.POST.get('student')
-        registration_number = request.POST.get('registration_number')
-        name = request.POST.get('name')
-        programme = request.POST.get('programme', 'Master of Computer Applications')
-        semester = request.POST.get('semester')
-        college = request.POST.get('college')
-        course_code = request.POST.get('course_code')
-        course_title = request.POST.get('course_title')
-        credits = request.POST.get('credits')
-        ca_marks = request.POST.get('ca_marks')
-        ese_marks = request.POST.get('ese_marks')
-        total_marks = request.POST.get('total_marks')
-        grade_point = request.POST.get('grade_point')
-        credit_point = request.POST.get('credit_point')
-        result = request.POST.get('result')
-        sgpa = request.POST.get('sgpa')
-        grade = request.POST.get('grade')
-        status = request.POST.get('status')
+    if request.method == "POST":
+        student_id = request.POST.get("student")
+        registration_number = request.POST.get("registration_number")
+        name = request.POST.get("name")
+        programme = request.POST.get("programme", "Master of Computer Applications")
+        semester = request.POST.get("semester")
+        college = request.POST.get("college")
+        course_code = request.POST.get("course_code")
+        course_title = request.POST.get("course_title")
+        max_mark = request.POST.get("max_mark")
+        ca_marks = request.POST.get("ca_marks")
+        ese_marks = request.POST.get("ese_marks")
+        total_marks = request.POST.get("total_marks")
+        grade_sub = request.POST.get("grade_sub")
+        result = request.POST.get("result")
 
+        # Ensure the selected student exists
         try:
-            # Save the data into the database
-            StudentResult.objects.create(
-                student_id=student,
-                registration_number=registration_number,
-                name=name,
-                programme=programme,
-                semester=semester,
-                college=college,
-                course_code=course_code,
-                course_title=course_title,
-                credits=credits,
-                ca_marks=ca_marks,
-                ese_marks=ese_marks,
-                total_marks=total_marks,
-                grade_point=grade_point,
-                credit_point=credit_point,
-                result=result,
-                sgpa=sgpa,
-                grade=grade,
-                status=status
-            )
-            messages.success(request, "Student result added successfully!")
-            return redirect('staffdashboard')  # Redirect to a success page
-        except Exception as e:
-            messages.error(request, f"Error occurred: {e}")
+            student = User.objects.get(id=student_id)
+        except User.DoesNotExist:
+            messages.error(request, "Selected student does not exist.")
+            return redirect("addresult")
 
-    return render(request, 'admin_app/pages/Addresult.html')
+        # Create and save the result instance
+        result_instance = StudentResult(
+            student=student,
+            registration_number=registration_number,
+            name=name,
+            programme=programme,
+            semester=semester,
+            college=college,
+            course_code=course_code,
+            course_title=course_title,
+            max_mark=max_mark,
+            ca_marks=ca_marks,
+            ese_marks=ese_marks,
+            total_marks=total_marks,
+            grade_sub=grade_sub,
+            result=result,
+        )
+        result_instance.save()
+        messages.success(request, "Result added successfully!")
+        return redirect("addresult")
+
+    # For GET requests, display the form
+    users = User.objects.filter(is_stud=True)  # Assuming all users are valid students
+    context = {"users": users}
+    return render(request, "admin_app/pages/Addresult.html", context)
+
+def view_results(request):
+    current_page='viewresult'
+    student_id = request.user.id  # Assuming the user is authenticated and `request.user` gives the current user
+
+    try:
+        student = User.objects.get(id=student_id)
+    except User.DoesNotExist:
+        messages.error(request, "Student not found.")
+        return redirect("studdashboard")
+
+    # Fetch all results for the current student
+    results = StudentResult.objects.filter(student=student)
+
+    if not results.exists():
+        messages.info(request, "No results found for the selected student.")
+        return redirect("studdashboard")
+
+    # Calculate SGPA and overall status
+    total_credits = results.aggregate(Sum("max_mark"))["max_mark__sum"]
+    total_grade_points = results.aggregate(Sum("total_marks"))["total_marks__sum"]
+    
+    sgpa = round(total_grade_points / total_credits, 2) if total_credits else 0
+
+    # Determine the overall status
+    overall_status = "Passed" if all(result.result == "P" for result in results) else "Failed"
+
+    context = {
+        "student": student,
+        "results": results,
+        "sgpa": sgpa,
+        "overall_status": overall_status,
+        'current_page':current_page
+    }
+
+    return render(request, "admin_app/pages/viewresultstud.html", context)
+

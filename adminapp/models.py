@@ -35,12 +35,11 @@ class StudentResult(models.Model):
     # Course Details
     course_code = models.CharField(max_length=10)
     course_title = models.CharField(max_length=255)
-    credits = models.FloatField()
+    max_mark=models.IntegerField()
     ca_marks = models.IntegerField("Continuous Assessment Marks")
     ese_marks = models.IntegerField("End Semester Evaluation Marks")
     total_marks = models.IntegerField()
-    grade_point = models.FloatField()
-    credit_point = models.FloatField()
+    grade_sub=models.CharField(max_length=3,null=True,blank=True)
     result = models.CharField(max_length=1, choices=[("P", "Pass"), ("F", "Fail")])
 
     # Additional Information
