@@ -63,29 +63,34 @@ def Addstaff(request):
         place = request.POST['place']
         address = request.POST['address']
         email = request.POST['email']
-        phnnum=request.POST['phoneno']
+        phnnum = request.POST['phoneno']
         photo = request.FILES['photo']
-        
 
-        # Create a new user/staff record
-        User.objects.create_user(
-            id=fac_id,
-            username=name,
-            password=password,  
-            dob=dob,
-            place=place,
-            address=address,
-            phone_number=phnnum,
-            email=email,
-            image=photo,
-            is_fac=True
-        )
-       
-        # Redirect to the dashboard or another page
-        return redirect('dashboard') 
-    else:
-        # Render the form page
-        return render(request, 'admin_app/pages/Addstaff.html')
+        # Check if fac_id already exists
+        if User.objects.filter(id=fac_id).exists():
+            messages.error(request, "The faculty ID is already taken.")
+        else:
+            try:
+                # Create a new user/staff record
+                User.objects.create_user(
+                    id=fac_id,
+                    username=name,
+                    password=password,
+                    dob=dob,
+                    place=place,
+                    address=address,
+                    phone_number=phnnum,
+                    email=email,
+                    image=photo,
+                    is_fac=True
+                )
+                messages.success(request, f"Staff member added successfully!")
+                return redirect('dashboard')  # Adjust the redirection as needed
+            except Exception as e:
+                messages.error(request, f"An error occurred: {str(e)}")
+
+    return render(request, 'admin_app/pages/Addstaff.html')
+
 
 def staffdashboard(request):
     current_page = 'staffdashboard'
@@ -109,29 +114,35 @@ def add_stud(request):
         phoneno = request.POST.get('phoneno')
         address = request.POST.get('address')
         name = request.POST.get('username')
-        sem=request.POST['semester']
-        try:
-            User.objects.create_user(
-                id=studid,
-                username=name,
-                last_name=lname,  
-                email=email,
-                password=password,
-                dob=dob,
-                place=place,
-                image=photo,
-                phone_number=phoneno,
-                address=address, 
-                first_name=fname,
-                semester=sem,
-                is_stud=True
-            )
-            messages.success(request, f"Stud member  added successfully!")
-            return redirect('dashboard')  # Adjust the redirection as needed
-        except Exception as e:
-            messages.error(request, f"An error occurred: {str(e)}")
+        sem = request.POST['semester']
+        
+        # Check if studid already exists
+        if User.objects.filter(id=studid).exists():
+            messages.error(request, "The student ID is already taken.")
+        else:
+            try:
+                User.objects.create_user(
+                    id=studid,
+                    username=name,
+                    last_name=lname,  
+                    email=email,
+                    password=password,
+                    dob=dob,
+                    place=place,
+                    image=photo,
+                    phone_number=phoneno,
+                    address=address, 
+                    first_name=fname,
+                    semester=sem,
+                    is_stud=True
+                )
+                messages.success(request, f"Student member added successfully!")
+                return redirect('dashboard')  # Adjust the redirection as needed
+            except Exception as e:
+                messages.error(request, f"An error occurred: {str(e)}")
 
-    return render(request,'admin_app/pages/Addstud.html')
+    return render(request, 'admin_app/pages/Addstud.html')
+
 
 
   
@@ -388,6 +399,7 @@ def delete_timetable(request, pk):
 
 
 def add_result(request):
+    current_page='addresult'
     if request.method == "POST":
         student_id = request.POST.get("student")
         registration_number = request.POST.get("registration_number")
@@ -434,7 +446,7 @@ def add_result(request):
 
     # For GET requests, display the form
     users = User.objects.filter(is_stud=True)  # Assuming all users are valid students
-    context = {"users": users}
+    context = {"users": users,'current_page':current_page}
     return render(request, "admin_app/pages/Addresult.html", context)
 
 def view_results(request):
@@ -472,4 +484,54 @@ def view_results(request):
     }
 
     return render(request, "admin_app/pages/viewresultstud.html", context)
+
+
+def view_all_results(request):
+    current_page='allresults'
+    results =StudentResult.objects.all() # Use select_related if you have a ForeignKey to optimize queries
+    return render(request, "admin_app/pages/manageresult.html", {"results": results,'current_page':current_page})
+
+
+def edit_result(request, result_id):
+    # Fetch the result object using the provided ID
+    result = get_object_or_404(StudentResult, id=result_id)
+
+    if request.method == "POST":
+        # Update the result object with the data from the form
+        result.student_id = request.POST.get("student")
+        result.registration_number = request.POST.get("registration_number")
+        result.name = request.POST.get("name")
+        result.semester = request.POST.get("semester")
+        result.college = request.POST.get("college")
+        result.course_code = request.POST.get("course_code")
+        result.course_title = request.POST.get("course_title")
+        result.max_mark = request.POST.get("max_mark")
+        result.ca_marks = request.POST.get("ca_marks")
+        result.ese_marks = request.POST.get("ese_marks")
+        result.total_marks = request.POST.get("total_marks")
+        result.grade_sub = request.POST.get("grade_sub")
+        result.result = request.POST.get("result")
+
+        # Save the updated result to the database
+        result.save()
+
+        # Add a success message and redirect to a results list or detail page
+        messages.success(request, "Result updated successfully!")
+        return redirect("allresults")  # Change `results_list` to your desired redirect view name
+
+    # Fetch all users to populate the student dropdown
+    users = User.objects.all()
+
+    # Render the edit result template with the existing result data
+    return render(request, "admin_app/pages/resultedit.html", {"result": result, "users": users})
+
+def delete_result(request, result_id):
+    if request.method == "POST":
+        result = get_object_or_404(StudentResult, id=result_id)
+        result.delete()
+        messages.success(request, "Result has been deleted successfully.")
+        return redirect("allresults")  # Redirect to the view showing all results
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect("allresults")
 
