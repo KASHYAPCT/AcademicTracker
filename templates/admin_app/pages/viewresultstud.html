@@ -20,7 +20,6 @@
                         <th>Total Marks</th>
                         <th>Grade</th>
                         <th>Result</th>
-                        <th>Semester</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,22 +34,26 @@
                         <td>{{ result.total_marks }}</td>
                         <td>{{ result.grade_sub }}</td>
                         <td>{{ result.result }}</td>
-                        <td>{{ result.semester }}</td> <!-- Assuming you have a semester field -->
+                        
                     </tr>
                     {% endfor %}
                 </tbody>
+                <tfoot>
+                    <tr style="font-weight: bold;">
+                        <td colspan="3">Total</td>
+                        <td>{{ total_max_marks }}</td>
+                        <td>{{ total_ca_marks }}</td>
+                        <td>{{ total_ese_marks }}</td>
+                        <td>{{ total_total_marks }}</td>
+                        <td>{{ overall_grade }}</td>
+                        <td>{{ overall_status }}</td>
+                        
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-md-6">
-            <p style="font-weight: bold; color: #333;">SGPA: <span style="color: #007bff;">{{ sgpa }}</span></p>
-        </div>
-        <div class="col-md-6 text-end">
-            <p style="font-weight: bold; color: #333;">Overall Status: <span style="color: #007bff;">{{ overall_status }}</span></p>
-        </div>
-    </div>
     
     {% endblock content %}
     

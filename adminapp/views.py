@@ -29,13 +29,13 @@ def Login(request):
                 return redirect('staffdashboard')  # Redirect to faculty dashboard
 
         else:
-            error = "Invalid username / password"
-            return HttpResponse(error)
+            messages.error(request,"Invalid username / password")
+            return redirect('Login')
 
     else:
         return render(request, "login.html")
 
-# @login_required(login_url='/login/')  
+@login_required()  
 def dashboard(request):
     staff_count = User.objects.filter(is_fac=True).count()
     stud_count = User.objects.filter(is_stud=True).count()
@@ -465,25 +465,57 @@ def view_results(request):
     if not results.exists():
         messages.info(request, "No results found for the selected student.")
         return redirect("studdashboard")
-
-    # Calculate SGPA and overall status
-    total_credits = results.aggregate(Sum("max_mark"))["max_mark__sum"]
-    total_grade_points = results.aggregate(Sum("total_marks"))["total_marks__sum"]
+    total_max_marks = sum(result.max_mark for result in results)
+    total_ca_marks = sum(result.ca_marks for result in results)
+    total_ese_marks = sum(result.ese_marks for result in results)
+    total_total_marks = sum(result.total_marks for result in results)
+    overall_grade = calculate_overall_grade(results)  # Function to determine overall grade
     
-    sgpa = round(total_grade_points / total_credits, 2) if total_credits else 0
-
     # Determine the overall status
     overall_status = "Passed" if all(result.result == "P" for result in results) else "Failed"
+    
 
     context = {
         "student": student,
         "results": results,
-        "sgpa": sgpa,
         "overall_status": overall_status,
-        'current_page':current_page
+        'current_page':current_page,
+        'total_marks': total_total_marks,
+        'total_courses': results.count(),
+        'total_max_marks': total_max_marks,
+        'total_ca_marks': total_ca_marks,
+        'total_ese_marks': total_ese_marks,
+        'total_total_marks': total_total_marks,
+        'overall_grade': overall_grade,
     }
 
     return render(request, "admin_app/pages/viewresultstud.html", context)
+def calculate_overall_grade(results):
+    # Calculate total obtained marks and total maximum marks
+    total_obtained_marks = sum(result.total_marks for result in results)
+    total_maximum_marks = sum(result.max_mark for result in results)
+
+    # Avoid division by zero
+    if total_maximum_marks == 0:
+        return "N/A"
+
+    # Calculate percentage
+    percentage = (total_obtained_marks / total_maximum_marks) * 100
+
+    # Determine grade based on percentage
+    if percentage >= 90:
+        return "O"  # Outstanding
+    elif percentage >= 80:
+        return "A"
+    elif percentage >= 70:
+        return "B"
+    elif percentage >= 60:
+        return "C"
+    elif percentage >= 50:
+        return "D"
+    else:
+        return "F"  # Fail
+
 
 
 def view_all_results(request):
