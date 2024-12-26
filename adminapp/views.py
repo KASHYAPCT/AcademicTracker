@@ -35,7 +35,7 @@ def Login(request):
     else:
         return render(request, "login.html")
 
-@login_required()  
+@login_required(login_url='/') 
 def dashboard(request):
     staff_count = User.objects.filter(is_fac=True).count()
     stud_count = User.objects.filter(is_stud=True).count()
@@ -52,7 +52,7 @@ def logout_view(request):
     return redirect('Login')
 
 
-
+@login_required(login_url='/') 
 def Addstaff(request):
     if request.method == 'POST':
         # Retrieve data from the form
@@ -91,7 +91,7 @@ def Addstaff(request):
 
     return render(request, 'admin_app/pages/Addstaff.html')
 
-
+@login_required(login_url='/') 
 def staffdashboard(request):
     current_page = 'staffdashboard'
     current_user = request.user
@@ -100,7 +100,7 @@ def staffdashboard(request):
         'current_user': current_user
     }
     return render(request, 'admin_app/pages/staffdashboard.html', context)
-
+@login_required(login_url='/') 
 def add_stud(request):
     if request.method == 'POST':
         studid = request.POST.get('studid')
@@ -145,7 +145,7 @@ def add_stud(request):
 
 
 
-  
+@login_required(login_url='/') 
 def staff_list(request):
     current_page = 'stafflist'
     facultys = User.objects.filter(is_fac=True)
@@ -155,6 +155,8 @@ def staff_list(request):
         }
     return render(request, 'admin_app/pages/stafflist.html', context)
 
+
+@login_required(login_url='/') 
 def stud_list(request):
     current_page = 'studlist'
     students = User.objects.filter(is_stud=True)
@@ -165,7 +167,7 @@ def stud_list(request):
     return render(request, 'admin_app/pages/studlist.html', context)
 
 
-
+@login_required(login_url='/') 
 def edit_staff(request, faculty_id):
     faculty = get_object_or_404(User, id=faculty_id)  
     if request.method == "POST":
@@ -199,6 +201,7 @@ def faculty_delete(request, faculty_id):
     # Redirect to the faculty list page
     return redirect('stafflist')  # Replace with the actual name of your faculty list view
 
+@login_required(login_url='/') 
 def stud_delete(request, stud_id):
     student = get_object_or_404(User, id=stud_id)
 
@@ -213,6 +216,7 @@ def stud_delete(request, stud_id):
     # Redirect to the faculty list page
     return redirect('studlist') 
 
+@login_required(login_url='/') 
 def studdashboard(request):
     current_page = 'studdashboard'
     current_user = request.user
@@ -222,6 +226,7 @@ def studdashboard(request):
     }
     return render(request, 'admin_app/pages/studentdashboard.html', context)
 
+@login_required(login_url='/') 
 def addtimetable(request):
       if request.method == 'POST':
         photo = request.FILES.get('photo')
@@ -238,7 +243,7 @@ def addtimetable(request):
             messages.error(request, f"An error occurred: {str(e)}")
 
       return render(request,'admin_app/pages/Addtimetable.html')
-
+@login_required(login_url='/') 
 def timetable_view(request):
     current_page = 'timetableview'
     try:
@@ -252,7 +257,7 @@ def timetable_view(request):
     }
     return render(request, 'admin_app/pages/viewtimetable.html', context)
 
-
+@login_required(login_url='/') 
 def timetablestaff_view(request):
     current_page = 'timetablestaff'
     try:
@@ -294,7 +299,7 @@ def update_student(request, student_id):
         return redirect('studlist')  # Replace with the name of your redirect URL
 
     return render(request, 'admin_app/pages/editstud.html', {'student': student})
-
+@login_required(login_url='/') 
 def addnotification(request):
       if request.method == 'POST':
         description = request.POST.get('notification')
@@ -332,7 +337,7 @@ def view_notificationsstud(request):
     return render(request, "admin_app/pages/viewnotificationstud.html",context)
 
 
-
+@login_required(login_url='/') 
 def timetablestud_view(request):
     current_page = 'timetablestud'
     try:
@@ -397,7 +402,7 @@ def delete_timetable(request, pk):
         messages.error(request, f"An error occurred: {str(e)}")
     return redirect('timetableview') 
 
-
+@login_required(login_url='/') 
 def add_result(request):
     current_page='addresult'
     if request.method == "POST":
@@ -449,6 +454,7 @@ def add_result(request):
     context = {"users": users,'current_page':current_page}
     return render(request, "admin_app/pages/Addresult.html", context)
 
+@login_required(login_url='/') 
 def view_results(request):
     current_page='viewresult'
     student_id = request.user.id  # Assuming the user is authenticated and `request.user` gives the current user
@@ -517,7 +523,7 @@ def calculate_overall_grade(results):
         return "F"  # Fail
 
 
-
+@login_required(login_url='/') 
 def view_all_results(request):
     current_page='allresults'
     results =StudentResult.objects.all() # Use select_related if you have a ForeignKey to optimize queries

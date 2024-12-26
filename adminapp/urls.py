@@ -32,9 +32,9 @@ urlpatterns = [
     path('timetable/delete/<int:pk>/',views.delete_timetable, name='deletetimetable'),
     path('addresult/',views.add_result,name="addresult"),
     path("results/",views.view_results, name="viewresult"),
-     path("allresults/", views.view_all_results, name="allresults"),
-     path('edit-result/<int:result_id>/', views.edit_result, name='editresult'),
-     path("delete-result/<int:result_id>/",views.delete_result, name="deleteresult"),
+    path("allresults/", views.view_all_results, name="allresults"),
+    path('edit-result/<int:result_id>/', views.edit_result, name='editresult'),
+    path("delete-result/<int:result_id>/",views.delete_result, name="deleteresult"),
     
 
 
